@@ -14,6 +14,7 @@ using System.Windows.Forms;
  * * Высчитывать вместимость контейнера и предупреждать о переполнении
  * * Реализовать сокрытие и изъятие данных из файла
  * * Реализовать логику преамбулы файла и предупреждении об отсутствии оной при извлечении данных
+ * * Реализовать проверку целостности данных
  */
 
 namespace steganographia_kurs
@@ -85,7 +86,34 @@ namespace steganographia_kurs
         //методы должны быть static!
         public static void HideData(string container, string main_data) //container - jpeg, main_data - текст
         {
+            string temp = null; int j = 0;
+            for (int i = 0; i <= main_data.Length; i++)
+            {
+                temp += main_data[i];
+                if (i % 15 == 0)//временно вырезать redundantdata, оставить на "сладкое", если будет время
+                {
+                    temp = RedundantData(temp); //тут творится форменное безумие
+                    string output = null;
+                    for (int x = 0, y = 0; j <= container.Length; j++, x++)
+                    {
+                        output += container[j];
+                        if (x % 5 == 0)
+                        {
+                            output += temp[y] + temp[y+1];
+                            y += 2;
+                            x = 0;
+                            output = null;
+                        }
 
+                    }
+                    temp = null;
+                }
+            }
+        }
+        public static string RedundantData(string input)
+        {
+
+            return "";
         }
     }
 }
