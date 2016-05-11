@@ -11,3 +11,6 @@ C:\Users\Ololoshenka\Documents\Visual Studio 2015\Projects\steganographia_kurs\s
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\bin\Debug\steganographia_kurs.exe.config
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.exe
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.pdb
+C:\Users\empty child\Source\Repos\steganography-proj\steganographia_kurs\bin\Debug\steganographia_kurs.exe.config
+C:\Users\empty child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.exe
+C:\Users\empty child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.pdb

@@ -29,6 +29,7 @@ namespace steganographia_kurs
 
     public class FileProcessor
     {
+        public static Bitmap targetBitmap;
         //методы должны быть static!
         public static string ImageOpen(string filepath)
         {
@@ -53,6 +54,7 @@ namespace steganographia_kurs
                     jpeg += Convert.ToString(c.B, 2);
                 }
             }
+            targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height, sourceBitmap.PixelFormat);
             return jpeg;
         }
         public static string TextOpen(string filepath)
@@ -84,31 +86,69 @@ namespace steganographia_kurs
     public class DataConverter
     {
         //методы должны быть static!
-        public static void HideData(string container, string main_data) //container - jpeg, main_data - текст
+        public static void HideData(string container, string maindata) //container - jpeg, main_data - текст
         {
-            string temp = null; int j = 0;
-            for (int i = 0; i <= main_data.Length; i++)
+            string s1 = null; byte r = 0, g = 0, b = 0;
+
+            for(int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i <= container.Length; i++)
             {
-                temp += main_data[i];
-                if (i % 15 == 0)//временно вырезать redundantdata, оставить на "сладкое", если будет время
+                s1 += container[i];
+                cnt++;
+                if (cnt % 5 == 0)
                 {
-                    temp = RedundantData(temp); //тут творится форменное безумие
-                    string output = null;
-                    for (int x = 0, y = 0; j <= container.Length; j++, x++)
+                    s1 += maindata[j] + maindata[j + 1];
+                    j += 2;
+                    i += 2;
+                    cnt = 0;
+                    if (colour == 0)
                     {
-                        output += container[j];
-                        if (x % 5 == 0)
+                        r = Convert.ToByte(s1, 2);
+                        colour++;
+                    }
+                    else if (colour == 1)
+                    {
+                        g = Convert.ToByte(s1, 2);
+                        colour++;
+                    }
+                    else if (colour == 2)
+                    {
+                        b = Convert.ToByte(s1, 2);
+                        for (; y < FileProcessor.targetBitmap.Height; ++y) // низя здесь циклы использовать, нужно как-то по-другому обходить фоточку
                         {
-                            output += temp[y] + temp[y+1];
-                            y += 2;
-                            x = 0;
-                            output = null;
+                            for (; x < FileProcessor.targetBitmap.Width; ++x)
+                            {
+                                FileProcessor.targetBitmap.SetPixel(x, y, Color.FromArgb(255, r, g, b));
+                            }
                         }
+                        colour = 0;
 
                     }
-                    temp = null;
                 }
             }
+
+            //for (int i = 0; i <= main_data.Length; i++)
+            //{
+            //    temp += main_data[i];
+            //    if (i % 15 == 0)//временно вырезать redundantdata, оставить на "сладкое", если будет время
+            //    {
+            //        //temp = RedundantData(temp); //тут творится форменное безумие
+            //        string output = null;
+            //        for (int x = 0, y = 0; j <= container.Length; j++, x++)
+            //        {
+            //            output += container[j];
+            //            if (x % 5 == 0)
+            //            {
+            //                output += temp[y] + temp[y+1];
+            //                y += 2;
+            //                x = 0;
+            //                FileProcessor.targetBitmap.SetPixel(0, 0, Color.FromArgb(255, 0, 0, 0));
+            //                output = null;
+            //            }
+
+            //        }
+            //        temp = null;
+            //    }
+            //}
         }
         public static string RedundantData(string input)
         {
