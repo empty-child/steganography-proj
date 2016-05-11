@@ -12,7 +12,7 @@ using System.Windows.Forms;
 /*
  * TODO:
  * * Высчитывать вместимость контейнера и предупреждать о переполнении
- * * Реализовать сокрытие и изъятие данных из файла
+ * * Реализовать изъятие данных из файла
  * * Реализовать логику преамбулы файла и предупреждении об отсутствии оной при извлечении данных
  * * Реализовать проверку целостности данных
  */
@@ -24,6 +24,10 @@ namespace steganographia_kurs
         public Form1()
         {
             InitializeComponent();
+            string image = null, text = null;
+            image = FileProcessor.ImageOpen();
+            text = FileProcessor.TextOpen();
+            DataConverter.HideData(image, text);
         }
     }
 
@@ -31,7 +35,7 @@ namespace steganographia_kurs
     {
         public static Bitmap targetBitmap;
         //методы должны быть static!
-        public static string ImageOpen(string filepath)
+        public static string ImageOpen(string filepath = "1.jpg")
         {
             Bitmap sourceBitmap = null;
             try
@@ -49,15 +53,15 @@ namespace steganographia_kurs
                 for (int x = 0; x < sourceBitmap.Width; ++x)
                 {
                     Color c = sourceBitmap.GetPixel(x, y);
-                    jpeg += Convert.ToString(c.R, 2);
-                    jpeg += Convert.ToString(c.G, 2);
-                    jpeg += Convert.ToString(c.B, 2);
+                    jpeg += Convert.ToString(c.R, 2).PadLeft(8, '0');
+                    jpeg += Convert.ToString(c.G, 2).PadLeft(8, '0');
+                    jpeg += Convert.ToString(c.B, 2).PadLeft(8, '0');
                 }
             }
             targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height, sourceBitmap.PixelFormat);
             return jpeg;
         }
-        public static string TextOpen(string filepath)
+        public static string TextOpen(string filepath = "1.txt")
         {
             string output = null;
             try
@@ -66,7 +70,7 @@ namespace steganographia_kurs
                 while (!fstr_in.EndOfStream)
                 {
                     int sym_code = fstr_in.Read();
-                    output += Convert.ToString(sym_code, 2);
+                    output += Convert.ToString(sym_code, 2).PadLeft(8, '0');
                 }
                 return output;
             }
@@ -90,65 +94,53 @@ namespace steganographia_kurs
         {
             string s1 = null; byte r = 0, g = 0, b = 0;
 
-            for(int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i <= container.Length; i++)
+            for(int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
             {
                 s1 += container[i];
                 cnt++;
-                if (cnt % 5 == 0)
+                if (cnt % 6 == 0)
                 {
-                    s1 += maindata[j] + maindata[j + 1];
-                    j += 2;
+                    try
+                    {
+                        s1 += maindata[j];
+                        s1 += maindata[j + 1];
+                        j += 2;
+                    }
+                    catch
+                    {
+                        s1 += container[i + 1];
+                        s1 += container[i + 2];
+                    }
                     i += 2;
                     cnt = 0;
-                    if (colour == 0)
+                    switch (colour)
                     {
-                        r = Convert.ToByte(s1, 2);
-                        colour++;
-                    }
-                    else if (colour == 1)
-                    {
-                        g = Convert.ToByte(s1, 2);
-                        colour++;
-                    }
-                    else if (colour == 2)
-                    {
-                        b = Convert.ToByte(s1, 2);
-                        for (; y < FileProcessor.targetBitmap.Height; ++y) // низя здесь циклы использовать, нужно как-то по-другому обходить фоточку
-                        {
-                            for (; x < FileProcessor.targetBitmap.Width; ++x)
+                        case 0:
+                            r = Convert.ToByte(s1, 2);
+                            s1 = null;
+                            colour++;
+                            break;
+                        case 1:
+                            g = Convert.ToByte(s1, 2);
+                            s1 = null;
+                            colour++;
+                            break;
+                        case 2:
+                            b = Convert.ToByte(s1, 2);
+                            FileProcessor.targetBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
+                            x++;
+                            if (x >= FileProcessor.targetBitmap.Width)
                             {
-                                FileProcessor.targetBitmap.SetPixel(x, y, Color.FromArgb(255, r, g, b));
+                                x = 0;
+                                y++;
                             }
-                        }
-                        colour = 0;
-
+                            colour = 0;
+                            s1 = null;
+                            break;
                     }
                 }
             }
-
-            //for (int i = 0; i <= main_data.Length; i++)
-            //{
-            //    temp += main_data[i];
-            //    if (i % 15 == 0)//временно вырезать redundantdata, оставить на "сладкое", если будет время
-            //    {
-            //        //temp = RedundantData(temp); //тут творится форменное безумие
-            //        string output = null;
-            //        for (int x = 0, y = 0; j <= container.Length; j++, x++)
-            //        {
-            //            output += container[j];
-            //            if (x % 5 == 0)
-            //            {
-            //                output += temp[y] + temp[y+1];
-            //                y += 2;
-            //                x = 0;
-            //                FileProcessor.targetBitmap.SetPixel(0, 0, Color.FromArgb(255, 0, 0, 0));
-            //                output = null;
-            //            }
-
-            //        }
-            //        temp = null;
-            //    }
-            //}
+            FileProcessor.targetBitmap.Save("2.jpg");
         }
         public static string RedundantData(string input)
         {

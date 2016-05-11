@@ -1,0 +1,8 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/steganographia_kurs/v14/.suo
+/steganographia_kurs/bin/Debug/2.jpg
+/steganographia_kurs/bin/Debug/1.txt
+/steganographia_kurs/bin/Debug/1.jpg
