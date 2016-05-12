@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /*
  * TODO:
  * * Высчитывать вместимость контейнера и предупреждать о переполнении
- * * Реализовать изъятие данных из файла
  * * Реализовать логику преамбулы файла и предупреждении об отсутствии оной при извлечении данных
  * * Реализовать проверку целостности данных
  */
@@ -27,7 +20,9 @@ namespace steganographia_kurs
             string image = null, text = null;
             image = FileProcessor.ImageOpen();
             text = FileProcessor.TextOpen();
-            DataConverter.HideData(image, text);
+            //DataConverter.HideData(image, text);
+            string a = DataConverter.ExtractData(image);
+            DialogResult error = MessageBox.Show(a, "sadasd", MessageBoxButtons.OK);
         }
     }
 
@@ -35,7 +30,7 @@ namespace steganographia_kurs
     {
         public static Bitmap targetBitmap;
         //методы должны быть static!
-        public static string ImageOpen(string filepath = "1.jpg")
+        public static string ImageOpen(string filepath = "2.jpg")
         {
             Bitmap sourceBitmap = null;
             try
@@ -70,7 +65,7 @@ namespace steganographia_kurs
                 while (!fstr_in.EndOfStream)
                 {
                     int sym_code = fstr_in.Read();
-                    output += Convert.ToString(sym_code, 2).PadLeft(8, '0');
+                    output += Convert.ToString(sym_code, 2).PadLeft(16, '0');
                 }
                 return output;
             }
@@ -93,7 +88,6 @@ namespace steganographia_kurs
         public static void HideData(string container, string maindata) //container - jpeg, main_data - текст
         {
             string s1 = null; byte r = 0, g = 0, b = 0;
-
             for(int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
             {
                 s1 += container[i];
@@ -142,16 +136,37 @@ namespace steganographia_kurs
             }
             FileProcessor.targetBitmap.Save("2.jpg");
         }
-        public static string RedundantData(string input)
+        public static string ExtractData(string container = "2.jpg")
         {
-
-            return "";
+            string output = null, temp = null;
+            int a = 0;
+            for (int i = 0, cnt = 0; i < 384; i++)
+            {
+                cnt++;
+                if (cnt % 8 == 0)
+                {
+                    output += container[i - 1]; //брал на символ больше, проверить
+                    output += container[i];
+                    cnt = 0;
+                }
+            }
+            for(int i = 0; i < output.Length; i += 16)
+            {
+                try
+                {
+                    a = Convert.ToInt32(output.Substring(i, 16), 2);
+                    temp += ((char)a).ToString();
+                }
+                catch
+                {
+                    return temp;
+                }
+            }
+            return temp;
         }
+        //public static string RedundantData(string input)
+        //{
+        //    return "";
+        //}
     }
 }
-
-//string a = "abc";
-//foreach (char letter in a.ToCharArray())
-//{
-//  Console.WriteLine(Convert.ToString(letter, 2));
-//}
