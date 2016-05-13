@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 /*
  * TODO:
- * * Высчитывать вместимость контейнера и предупреждать о переполнении
  * * Реализовать логику преамбулы файла и предупреждении об отсутствии оной при извлечении данных
  * * Реализовать проверку целостности данных
  */
@@ -17,12 +16,70 @@ namespace steganographia_kurs
         public Form1()
         {
             InitializeComponent();
-            string image = null, text = null;
-            image = FileProcessor.ImageOpen();
-            text = FileProcessor.TextOpen();
-            //DataConverter.HideData(image, text);
+        }
+
+        private void hideButton_Click(object sender, EventArgs e)
+        {
+            if (containerPath.Text == "" || hideFilePath.Text == "")
+            {
+                DialogResult error = MessageBox.Show("Не указан путь к файлам", "Укажите путь", MessageBoxButtons.OK);
+                return;
+            }
+            if (!FileProcessor.Compare(containerPath.Text, hideFilePath.Text))
+            {
+                DialogResult error = MessageBox.Show("Объем скрываемого файла превышает емкость контейнера", "Недостаточно места", MessageBoxButtons.OK);
+                return;
+            }
+            pBHide.Visible = true;
+            string image = FileProcessor.ImageOpen(containerPath.Text); //сначала проводить проверку на наличие данных
+            pBHide.Value = 10;
+            string text = FileProcessor.TextOpen(hideFilePath.Text);
+            pBHide.Value = 20;
+            DataConverter.HideData(image, text);
+            pBHide.Value = 100;
+            DialogResult result = MessageBox.Show("Сокрытие прошло успешно", "Успех", MessageBoxButtons.OK);
+            pBHide.Visible = false;
+        }
+
+        private void extractButton_Click(object sender, EventArgs e)
+        {
+            pBExtract.Visible = true;
+            string image = FileProcessor.ImageOpen(containerExtract.Text);
+            pBExtract.Value = 20;
             string a = DataConverter.ExtractData(image);
+            pBExtract.Value = 100;
             DialogResult error = MessageBox.Show(a, "sadasd", MessageBoxButtons.OK);
+            pBExtract.Visible = false;
+        }
+
+        private void chooseHideFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+            OPF.Filter = "Файлы txt|*.txt";
+            if (OPF.ShowDialog() == DialogResult.OK)
+            {
+                hideFilePath.Text = OPF.FileName;
+            }
+        }
+
+        private void chooseContainer_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+            OPF.Filter = "Файлы jpg|*.jpg;*,jpeg";
+            if (OPF.ShowDialog() == DialogResult.OK)
+            {
+                containerPath.Text = OPF.FileName;
+            }
+        }
+
+        private void containerExChoose_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+            OPF.Filter = "Файлы jpg|*.jpg;*,jpeg";
+            if (OPF.ShowDialog() == DialogResult.OK)
+            {
+                containerExtract.Text = OPF.FileName;
+            }
         }
     }
 
@@ -39,7 +96,7 @@ namespace steganographia_kurs
             }
             catch(Exception exp)
             {
-                DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
+                //DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
                 return null;
             }
             string jpeg = null;
@@ -69,16 +126,22 @@ namespace steganographia_kurs
                 }
                 return output;
             }
-            catch(FileNotFoundException)
-            {
-                DialogResult error = MessageBox.Show("Файл не найден", "Ошибка при открытии", MessageBoxButtons.OK);
-                return null;
-            }
+            //catch(FileNotFoundException)
+            //{
+            //    DialogResult error = MessageBox.Show("Файл не найден", "Ошибка при открытии", MessageBoxButtons.OK);
+            //    return null;
+            //}
             catch (Exception exp)
             {
-                DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
+                //DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
                 return null;
             }
+        }
+        public static bool Compare(string container, string maindata)
+        {
+            FileInfo containerWeight = new FileInfo(container);
+            FileInfo maindataWeight = new FileInfo(maindata);
+            return maindataWeight.Length > containerWeight.Length ? false : true;
         }
     }
 
@@ -88,7 +151,8 @@ namespace steganographia_kurs
         public static void HideData(string container, string maindata) //container - jpeg, main_data - текст
         {
             string s1 = null; byte r = 0, g = 0, b = 0;
-            for(int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
+            Application.DoEvents();
+            for (int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
             {
                 s1 += container[i];
                 cnt++;
