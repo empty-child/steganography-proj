@@ -30,6 +30,7 @@
         {
             this.ControlPanel = new System.Windows.Forms.TabControl();
             this.HideData = new System.Windows.Forms.TabPage();
+            this.pBHide = new System.Windows.Forms.ProgressBar();
             this.hideButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.containerPath = new System.Windows.Forms.TextBox();
@@ -38,12 +39,13 @@
             this.hideFilePath = new System.Windows.Forms.TextBox();
             this.chooseHideFile = new System.Windows.Forms.Button();
             this.ExtractData = new System.Windows.Forms.TabPage();
+            this.pBExtract = new System.Windows.Forms.ProgressBar();
             this.extractButton = new System.Windows.Forms.Button();
             this.containerExChoose = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.containerExtract = new System.Windows.Forms.TextBox();
-            this.pBHide = new System.Windows.Forms.ProgressBar();
-            this.pBExtract = new System.Windows.Forms.ProgressBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.outputName = new System.Windows.Forms.TextBox();
             this.ControlPanel.SuspendLayout();
             this.HideData.SuspendLayout();
             this.ExtractData.SuspendLayout();
@@ -56,11 +58,13 @@
             this.ControlPanel.Location = new System.Drawing.Point(12, 12);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.SelectedIndex = 0;
-            this.ControlPanel.Size = new System.Drawing.Size(439, 263);
+            this.ControlPanel.Size = new System.Drawing.Size(439, 317);
             this.ControlPanel.TabIndex = 0;
             // 
             // HideData
             // 
+            this.HideData.Controls.Add(this.label4);
+            this.HideData.Controls.Add(this.outputName);
             this.HideData.Controls.Add(this.pBHide);
             this.HideData.Controls.Add(this.hideButton);
             this.HideData.Controls.Add(this.label2);
@@ -72,14 +76,24 @@
             this.HideData.Location = new System.Drawing.Point(4, 22);
             this.HideData.Name = "HideData";
             this.HideData.Padding = new System.Windows.Forms.Padding(3);
-            this.HideData.Size = new System.Drawing.Size(431, 237);
+            this.HideData.Size = new System.Drawing.Size(431, 291);
             this.HideData.TabIndex = 0;
             this.HideData.Text = "Скрыть данные";
             this.HideData.UseVisualStyleBackColor = true;
             // 
+            // pBHide
+            // 
+            this.pBHide.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pBHide.Location = new System.Drawing.Point(26, 242);
+            this.pBHide.MarqueeAnimationSpeed = 1;
+            this.pBHide.Name = "pBHide";
+            this.pBHide.Size = new System.Drawing.Size(385, 28);
+            this.pBHide.TabIndex = 8;
+            this.pBHide.Visible = false;
+            // 
             // hideButton
             // 
-            this.hideButton.Location = new System.Drawing.Point(131, 116);
+            this.hideButton.Location = new System.Drawing.Point(131, 164);
             this.hideButton.Name = "hideButton";
             this.hideButton.Size = new System.Drawing.Size(169, 63);
             this.hideButton.TabIndex = 7;
@@ -151,14 +165,24 @@
             this.ExtractData.Location = new System.Drawing.Point(4, 22);
             this.ExtractData.Name = "ExtractData";
             this.ExtractData.Padding = new System.Windows.Forms.Padding(3);
-            this.ExtractData.Size = new System.Drawing.Size(431, 237);
+            this.ExtractData.Size = new System.Drawing.Size(431, 291);
             this.ExtractData.TabIndex = 1;
             this.ExtractData.Text = "Извлечь данные";
             this.ExtractData.UseVisualStyleBackColor = true;
             // 
+            // pBExtract
+            // 
+            this.pBExtract.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pBExtract.Location = new System.Drawing.Point(26, 242);
+            this.pBExtract.MarqueeAnimationSpeed = 1;
+            this.pBExtract.Name = "pBExtract";
+            this.pBExtract.Size = new System.Drawing.Size(385, 28);
+            this.pBExtract.TabIndex = 9;
+            this.pBExtract.Visible = false;
+            // 
             // extractButton
             // 
-            this.extractButton.Location = new System.Drawing.Point(131, 116);
+            this.extractButton.Location = new System.Drawing.Point(131, 164);
             this.extractButton.Name = "extractButton";
             this.extractButton.Size = new System.Drawing.Size(169, 63);
             this.extractButton.TabIndex = 8;
@@ -193,31 +217,27 @@
             this.containerExtract.Size = new System.Drawing.Size(303, 20);
             this.containerExtract.TabIndex = 0;
             // 
-            // pBHide
+            // label4
             // 
-            this.pBHide.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.pBHide.Location = new System.Drawing.Point(26, 192);
-            this.pBHide.MarqueeAnimationSpeed = 1;
-            this.pBHide.Name = "pBHide";
-            this.pBHide.Size = new System.Drawing.Size(385, 28);
-            this.pBHide.TabIndex = 8;
-            this.pBHide.Visible = false;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 107);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Имя выходного файла:";
             // 
-            // pBExtract
+            // outputName
             // 
-            this.pBExtract.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.pBExtract.Location = new System.Drawing.Point(26, 192);
-            this.pBExtract.MarqueeAnimationSpeed = 1;
-            this.pBExtract.Name = "pBExtract";
-            this.pBExtract.Size = new System.Drawing.Size(385, 28);
-            this.pBExtract.TabIndex = 9;
-            this.pBExtract.Visible = false;
+            this.outputName.Location = new System.Drawing.Point(26, 123);
+            this.outputName.Name = "outputName";
+            this.outputName.Size = new System.Drawing.Size(303, 20);
+            this.outputName.TabIndex = 9;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(463, 287);
+            this.ClientSize = new System.Drawing.Size(463, 341);
             this.Controls.Add(this.ControlPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -250,6 +270,8 @@
         private System.Windows.Forms.Button extractButton;
         private System.Windows.Forms.ProgressBar pBHide;
         private System.Windows.Forms.ProgressBar pBExtract;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox outputName;
     }
 }
 

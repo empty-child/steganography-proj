@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 /*
  * TODO:
- * * Реализовать логику преамбулы файла и предупреждении об отсутствии оной при извлечении данных
  * * Реализовать проверку целостности данных
  */
 
@@ -20,25 +19,33 @@ namespace steganographia_kurs
 
         private void hideButton_Click(object sender, EventArgs e)
         {
-            if (containerPath.Text == "" || hideFilePath.Text == "")
+            if (containerPath.Text == "" || hideFilePath.Text == "" || outputName.Text == "")
             {
                 DialogResult error = MessageBox.Show("Не указан путь к файлам", "Укажите путь", MessageBoxButtons.OK);
                 return;
             }
-            if (!FileProcessor.Compare(containerPath.Text, hideFilePath.Text))
+            if (!FileProcessor.Limit(containerPath.Text, hideFilePath.Text))
+            {
+                DialogResult error = MessageBox.Show("К сожалению, программа не в состоянии справится с таким объемом данных", "Ошибка", MessageBoxButtons.OK);
+                return;
+            }
+            pBHide.Visible = true;
+            string image = FileProcessor.ImageOpen(containerPath.Text);
+            pBHide.Value = 10;
+            string text = FileProcessor.TextOpen(hideFilePath.Text);
+            pBHide.Value = 20;
+            if (4 * text.Length > image.Length)
             {
                 DialogResult error = MessageBox.Show("Объем скрываемого файла превышает емкость контейнера", "Недостаточно места", MessageBoxButtons.OK);
                 return;
             }
-            pBHide.Visible = true;
-            string image = FileProcessor.ImageOpen(containerPath.Text); //сначала проводить проверку на наличие данных
-            pBHide.Value = 10;
-            string text = FileProcessor.TextOpen(hideFilePath.Text);
-            pBHide.Value = 20;
-            DataConverter.HideData(image, text);
+            DataConverter.HideData(image, text, outputName.Text);
             pBHide.Value = 100;
             DialogResult result = MessageBox.Show("Сокрытие прошло успешно", "Успех", MessageBoxButtons.OK);
             pBHide.Visible = false;
+            containerPath.Text = "";
+            hideFilePath.Text = "";
+            outputName.Text = "";
         }
 
         private void extractButton_Click(object sender, EventArgs e)
@@ -46,10 +53,18 @@ namespace steganographia_kurs
             pBExtract.Visible = true;
             string image = FileProcessor.ImageOpen(containerExtract.Text);
             pBExtract.Value = 20;
-            string a = DataConverter.ExtractData(image);
+            string extractedData = DataConverter.ExtractData(image);
             pBExtract.Value = 100;
-            DialogResult error = MessageBox.Show(a, "sadasd", MessageBoxButtons.OK);
+            if(extractedData == null)
+            {
+                DialogResult error = MessageBox.Show("Данный файл не является контейнером", "Ошибка чтения данных", MessageBoxButtons.OK);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show(extractedData, "Результат", MessageBoxButtons.OK);
+            }
             pBExtract.Visible = false;
+            containerExtract.Text = "";
         }
 
         private void chooseHideFile_Click(object sender, EventArgs e)
@@ -87,7 +102,7 @@ namespace steganographia_kurs
     {
         public static Bitmap targetBitmap;
         //методы должны быть static!
-        public static string ImageOpen(string filepath = "2.jpg")
+        public static string ImageOpen(string filepath)
         {
             Bitmap sourceBitmap = null;
             try
@@ -96,7 +111,7 @@ namespace steganographia_kurs
             }
             catch(Exception exp)
             {
-                //DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
+                DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
                 return null;
             }
             string jpeg = null;
@@ -113,7 +128,7 @@ namespace steganographia_kurs
             targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height, sourceBitmap.PixelFormat);
             return jpeg;
         }
-        public static string TextOpen(string filepath = "1.txt")
+        public static string TextOpen(string filepath)
         {
             string output = null;
             try
@@ -126,32 +141,32 @@ namespace steganographia_kurs
                 }
                 return output;
             }
-            //catch(FileNotFoundException)
-            //{
-            //    DialogResult error = MessageBox.Show("Файл не найден", "Ошибка при открытии", MessageBoxButtons.OK);
-            //    return null;
-            //}
             catch (Exception exp)
             {
-                //DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
+                DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
                 return null;
             }
         }
-        public static bool Compare(string container, string maindata)
+        public static bool Limit(string container, string maindata)
         {
             FileInfo containerWeight = new FileInfo(container);
             FileInfo maindataWeight = new FileInfo(maindata);
-            return maindataWeight.Length > containerWeight.Length ? false : true;
+            return maindataWeight.Length > 10000 || containerWeight.Length > 100000 ? false : true;
         }
     }
 
     public class DataConverter
     {
         //методы должны быть static!
-        public static void HideData(string container, string maindata) //container - jpeg, main_data - текст
+        public static void HideData(string container, string maindata, string outputName) //container - jpeg, main_data - текст
         {
-            string s1 = null; byte r = 0, g = 0, b = 0;
-            Application.DoEvents();
+            string s1 = null, temp = null; byte r = 0, g = 0, b = 0;
+            string preamble = "<!preamble size="+maindata.Length.ToString().PadLeft(16, '0')+"!>";
+            foreach (char letter in preamble.ToCharArray())
+            {
+              temp += Convert.ToString(letter, 2).PadLeft(16, '0');
+            }
+            maindata = temp + maindata;
             for (int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
             {
                 s1 += container[i];
@@ -198,35 +213,66 @@ namespace steganographia_kurs
                     }
                 }
             }
-            FileProcessor.targetBitmap.Save("2.jpg");
+            FileProcessor.targetBitmap.Save(outputName + ".jpg");
         }
+
         public static string ExtractData(string container = "2.jpg")
         {
-            string output = null, temp = null;
-            int a = 0;
-            for (int i = 0, cnt = 0; i < 384; i++)
+            string output = null; int size = 0;
+            output = Extractor(container);
+            if (string.Compare(ToText(output), 0, "<!preamble size=", 0, 16) != 0) 
+            {
+                return null;
+            }
+            else
+            {
+                size = int.Parse(ToText(output).Substring(16, 16))*4;
+            }
+            output = null;
+            output = Extractor(container, 2176, size);
+            output = ToText(output);
+            return output;
+        }
+
+        static string ToText(string binaryString)
+        {
+            string text = null; int charNum = 0;
+            for (int i = 0; i < binaryString.Length; i += 16)
+            {
+                try
+                {
+                    charNum = Convert.ToInt32(binaryString.Substring(i, 16), 2);
+                    text += ((char)charNum).ToString();
+                }
+                catch
+                {
+                    return text;
+                }
+            }
+            return text;
+        }
+
+        static string Extractor(string container, int position = 0, int size = 2176)
+        {
+            string output = null;
+            for (int i = position, cnt = 0; i < position + size; i++)
             {
                 cnt++;
                 if (cnt % 8 == 0)
                 {
-                    output += container[i - 1]; //брал на символ больше, проверить
-                    output += container[i];
-                    cnt = 0;
+                    try
+                    {
+                        output += container[i - 1]; //брал на символ больше, проверить
+                        output += container[i];
+                        cnt = 0;
+                    }
+                    catch
+                    {
+                        return output;
+                    }
                 }
             }
-            for(int i = 0; i < output.Length; i += 16)
-            {
-                try
-                {
-                    a = Convert.ToInt32(output.Substring(i, 16), 2);
-                    temp += ((char)a).ToString();
-                }
-                catch
-                {
-                    return temp;
-                }
-            }
-            return temp;
+            return output;
         }
         //public static string RedundantData(string input)
         //{
