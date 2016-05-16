@@ -1,0 +1,9 @@
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\bin\Release\steganographia_kurs.exe.config
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\bin\Release\steganographia_kurs.exe
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\bin\Release\steganographia_kurs.pdb
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.Form1.resources
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.Properties.Resources.resources
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.csproj.GenerateResource.Cache
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.exe
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.pdb
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.csprojResolveAssemblyReference.cache

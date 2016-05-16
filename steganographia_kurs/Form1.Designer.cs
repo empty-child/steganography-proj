@@ -30,16 +30,25 @@
         {
             this.ControlPanel = new System.Windows.Forms.TabControl();
             this.HideData = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.ExtractData = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
+            this.pBHide = new System.Windows.Forms.ProgressBar();
+            this.hideButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.containerPath = new System.Windows.Forms.TextBox();
+            this.chooseContainer = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.hideFilePath = new System.Windows.Forms.TextBox();
+            this.chooseHideFile = new System.Windows.Forms.Button();
+            this.ExtractData = new System.Windows.Forms.TabPage();
+            this.pBExtract = new System.Windows.Forms.ProgressBar();
+            this.extractButton = new System.Windows.Forms.Button();
+            this.containerExChoose = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.containerExtract = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.outputName = new System.Windows.Forms.TextBox();
             this.ControlPanel.SuspendLayout();
             this.HideData.SuspendLayout();
+            this.ExtractData.SuspendLayout();
             this.SuspendLayout();
             // 
             // ControlPanel
@@ -49,60 +58,48 @@
             this.ControlPanel.Location = new System.Drawing.Point(12, 12);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.SelectedIndex = 0;
-            this.ControlPanel.Size = new System.Drawing.Size(439, 263);
+            this.ControlPanel.Size = new System.Drawing.Size(439, 317);
             this.ControlPanel.TabIndex = 0;
             // 
             // HideData
             // 
-            this.HideData.Controls.Add(this.button3);
+            this.HideData.Controls.Add(this.label4);
+            this.HideData.Controls.Add(this.outputName);
+            this.HideData.Controls.Add(this.pBHide);
+            this.HideData.Controls.Add(this.hideButton);
             this.HideData.Controls.Add(this.label2);
-            this.HideData.Controls.Add(this.textBox2);
-            this.HideData.Controls.Add(this.button2);
+            this.HideData.Controls.Add(this.containerPath);
+            this.HideData.Controls.Add(this.chooseContainer);
             this.HideData.Controls.Add(this.label1);
-            this.HideData.Controls.Add(this.textBox1);
-            this.HideData.Controls.Add(this.button1);
+            this.HideData.Controls.Add(this.hideFilePath);
+            this.HideData.Controls.Add(this.chooseHideFile);
             this.HideData.Location = new System.Drawing.Point(4, 22);
             this.HideData.Name = "HideData";
             this.HideData.Padding = new System.Windows.Forms.Padding(3);
-            this.HideData.Size = new System.Drawing.Size(431, 237);
+            this.HideData.Size = new System.Drawing.Size(431, 291);
             this.HideData.TabIndex = 0;
             this.HideData.Text = "Скрыть данные";
             this.HideData.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // pBHide
             // 
-            this.textBox1.Location = new System.Drawing.Point(26, 37);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(303, 20);
-            this.textBox1.TabIndex = 2;
+            this.pBHide.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pBHide.Location = new System.Drawing.Point(26, 242);
+            this.pBHide.MarqueeAnimationSpeed = 1;
+            this.pBHide.Name = "pBHide";
+            this.pBHide.Size = new System.Drawing.Size(385, 28);
+            this.pBHide.TabIndex = 8;
+            this.pBHide.Visible = false;
             // 
-            // button1
+            // hideButton
             // 
-            this.button1.Location = new System.Drawing.Point(336, 35);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // ExtractData
-            // 
-            this.ExtractData.Location = new System.Drawing.Point(4, 22);
-            this.ExtractData.Name = "ExtractData";
-            this.ExtractData.Padding = new System.Windows.Forms.Padding(3);
-            this.ExtractData.Size = new System.Drawing.Size(431, 237);
-            this.ExtractData.TabIndex = 1;
-            this.ExtractData.Text = "Извлечь данные";
-            this.ExtractData.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Файл для сокрытия:";
+            this.hideButton.Location = new System.Drawing.Point(131, 164);
+            this.hideButton.Name = "hideButton";
+            this.hideButton.Size = new System.Drawing.Size(169, 63);
+            this.hideButton.TabIndex = 7;
+            this.hideButton.Text = "Скрыть";
+            this.hideButton.UseVisualStyleBackColor = true;
+            this.hideButton.Click += new System.EventHandler(this.hideButton_Click);
             // 
             // label2
             // 
@@ -113,42 +110,144 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Контейнер:";
             // 
-            // textBox2
+            // containerPath
             // 
-            this.textBox2.Location = new System.Drawing.Point(26, 79);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(303, 20);
-            this.textBox2.TabIndex = 5;
+            this.containerPath.Location = new System.Drawing.Point(26, 79);
+            this.containerPath.Name = "containerPath";
+            this.containerPath.ReadOnly = true;
+            this.containerPath.Size = new System.Drawing.Size(303, 20);
+            this.containerPath.TabIndex = 5;
             // 
-            // button2
+            // chooseContainer
             // 
-            this.button2.Location = new System.Drawing.Point(336, 77);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.chooseContainer.Location = new System.Drawing.Point(336, 77);
+            this.chooseContainer.Name = "chooseContainer";
+            this.chooseContainer.Size = new System.Drawing.Size(75, 23);
+            this.chooseContainer.TabIndex = 4;
+            this.chooseContainer.Text = "Обзор";
+            this.chooseContainer.UseVisualStyleBackColor = true;
+            this.chooseContainer.Click += new System.EventHandler(this.chooseContainer_Click);
             // 
-            // button3
+            // label1
             // 
-            this.button3.Location = new System.Drawing.Point(131, 136);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(169, 63);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Файл для сокрытия:";
+            // 
+            // hideFilePath
+            // 
+            this.hideFilePath.Location = new System.Drawing.Point(26, 37);
+            this.hideFilePath.Name = "hideFilePath";
+            this.hideFilePath.ReadOnly = true;
+            this.hideFilePath.Size = new System.Drawing.Size(303, 20);
+            this.hideFilePath.TabIndex = 2;
+            // 
+            // chooseHideFile
+            // 
+            this.chooseHideFile.Location = new System.Drawing.Point(336, 35);
+            this.chooseHideFile.Name = "chooseHideFile";
+            this.chooseHideFile.Size = new System.Drawing.Size(75, 23);
+            this.chooseHideFile.TabIndex = 1;
+            this.chooseHideFile.Text = "Обзор";
+            this.chooseHideFile.UseVisualStyleBackColor = true;
+            this.chooseHideFile.Click += new System.EventHandler(this.chooseHideFile_Click);
+            // 
+            // ExtractData
+            // 
+            this.ExtractData.Controls.Add(this.pBExtract);
+            this.ExtractData.Controls.Add(this.extractButton);
+            this.ExtractData.Controls.Add(this.containerExChoose);
+            this.ExtractData.Controls.Add(this.label3);
+            this.ExtractData.Controls.Add(this.containerExtract);
+            this.ExtractData.Location = new System.Drawing.Point(4, 22);
+            this.ExtractData.Name = "ExtractData";
+            this.ExtractData.Padding = new System.Windows.Forms.Padding(3);
+            this.ExtractData.Size = new System.Drawing.Size(431, 291);
+            this.ExtractData.TabIndex = 1;
+            this.ExtractData.Text = "Извлечь данные";
+            this.ExtractData.UseVisualStyleBackColor = true;
+            // 
+            // pBExtract
+            // 
+            this.pBExtract.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pBExtract.Location = new System.Drawing.Point(26, 242);
+            this.pBExtract.MarqueeAnimationSpeed = 1;
+            this.pBExtract.Name = "pBExtract";
+            this.pBExtract.Size = new System.Drawing.Size(385, 28);
+            this.pBExtract.TabIndex = 9;
+            this.pBExtract.Visible = false;
+            // 
+            // extractButton
+            // 
+            this.extractButton.Location = new System.Drawing.Point(131, 164);
+            this.extractButton.Name = "extractButton";
+            this.extractButton.Size = new System.Drawing.Size(169, 63);
+            this.extractButton.TabIndex = 8;
+            this.extractButton.Text = "Изъять";
+            this.extractButton.UseVisualStyleBackColor = true;
+            this.extractButton.Click += new System.EventHandler(this.extractButton_Click);
+            // 
+            // containerExChoose
+            // 
+            this.containerExChoose.Location = new System.Drawing.Point(336, 35);
+            this.containerExChoose.Name = "containerExChoose";
+            this.containerExChoose.Size = new System.Drawing.Size(75, 23);
+            this.containerExChoose.TabIndex = 2;
+            this.containerExChoose.Text = "Обзор";
+            this.containerExChoose.UseVisualStyleBackColor = true;
+            this.containerExChoose.Click += new System.EventHandler(this.containerExChoose_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 21);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Контейнер";
+            // 
+            // containerExtract
+            // 
+            this.containerExtract.Location = new System.Drawing.Point(26, 37);
+            this.containerExtract.Name = "containerExtract";
+            this.containerExtract.ReadOnly = true;
+            this.containerExtract.Size = new System.Drawing.Size(303, 20);
+            this.containerExtract.TabIndex = 0;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 107);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Имя выходного файла:";
+            // 
+            // outputName
+            // 
+            this.outputName.Location = new System.Drawing.Point(26, 123);
+            this.outputName.Name = "outputName";
+            this.outputName.Size = new System.Drawing.Size(303, 20);
+            this.outputName.TabIndex = 9;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(463, 287);
+            this.ClientSize = new System.Drawing.Size(463, 341);
             this.Controls.Add(this.ControlPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Стеганография";
             this.ControlPanel.ResumeLayout(false);
             this.HideData.ResumeLayout(false);
             this.HideData.PerformLayout();
+            this.ExtractData.ResumeLayout(false);
+            this.ExtractData.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -158,13 +257,21 @@
         private System.Windows.Forms.TabControl ControlPanel;
         private System.Windows.Forms.TabPage HideData;
         private System.Windows.Forms.TabPage ExtractData;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button chooseHideFile;
+        private System.Windows.Forms.TextBox hideFilePath;
+        private System.Windows.Forms.Button hideButton;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox containerPath;
+        private System.Windows.Forms.Button chooseContainer;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox containerExtract;
+        private System.Windows.Forms.Button containerExChoose;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button extractButton;
+        private System.Windows.Forms.ProgressBar pBHide;
+        private System.Windows.Forms.ProgressBar pBExtract;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox outputName;
     }
 }
 
