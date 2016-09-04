@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.ControlPanel = new System.Windows.Forms.TabControl();
-            this.HideData = new System.Windows.Forms.TabPage();
+            this.HideDataTab = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.outputName = new System.Windows.Forms.TextBox();
             this.pBHide = new System.Windows.Forms.ProgressBar();
             this.hideButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,16 +46,14 @@
             this.containerExChoose = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.containerExtract = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.outputName = new System.Windows.Forms.TextBox();
             this.ControlPanel.SuspendLayout();
-            this.HideData.SuspendLayout();
+            this.HideDataTab.SuspendLayout();
             this.ExtractData.SuspendLayout();
             this.SuspendLayout();
             // 
             // ControlPanel
             // 
-            this.ControlPanel.Controls.Add(this.HideData);
+            this.ControlPanel.Controls.Add(this.HideDataTab);
             this.ControlPanel.Controls.Add(this.ExtractData);
             this.ControlPanel.Location = new System.Drawing.Point(12, 12);
             this.ControlPanel.Name = "ControlPanel";
@@ -61,25 +61,41 @@
             this.ControlPanel.Size = new System.Drawing.Size(439, 317);
             this.ControlPanel.TabIndex = 0;
             // 
-            // HideData
+            // HideDataTab
             // 
-            this.HideData.Controls.Add(this.label4);
-            this.HideData.Controls.Add(this.outputName);
-            this.HideData.Controls.Add(this.pBHide);
-            this.HideData.Controls.Add(this.hideButton);
-            this.HideData.Controls.Add(this.label2);
-            this.HideData.Controls.Add(this.containerPath);
-            this.HideData.Controls.Add(this.chooseContainer);
-            this.HideData.Controls.Add(this.label1);
-            this.HideData.Controls.Add(this.hideFilePath);
-            this.HideData.Controls.Add(this.chooseHideFile);
-            this.HideData.Location = new System.Drawing.Point(4, 22);
-            this.HideData.Name = "HideData";
-            this.HideData.Padding = new System.Windows.Forms.Padding(3);
-            this.HideData.Size = new System.Drawing.Size(431, 291);
-            this.HideData.TabIndex = 0;
-            this.HideData.Text = "Скрыть данные";
-            this.HideData.UseVisualStyleBackColor = true;
+            this.HideDataTab.Controls.Add(this.label4);
+            this.HideDataTab.Controls.Add(this.outputName);
+            this.HideDataTab.Controls.Add(this.pBHide);
+            this.HideDataTab.Controls.Add(this.hideButton);
+            this.HideDataTab.Controls.Add(this.label2);
+            this.HideDataTab.Controls.Add(this.containerPath);
+            this.HideDataTab.Controls.Add(this.chooseContainer);
+            this.HideDataTab.Controls.Add(this.label1);
+            this.HideDataTab.Controls.Add(this.hideFilePath);
+            this.HideDataTab.Controls.Add(this.chooseHideFile);
+            this.HideDataTab.Location = new System.Drawing.Point(4, 22);
+            this.HideDataTab.Name = "HideDataTab";
+            this.HideDataTab.Padding = new System.Windows.Forms.Padding(3);
+            this.HideDataTab.Size = new System.Drawing.Size(431, 291);
+            this.HideDataTab.TabIndex = 0;
+            this.HideDataTab.Text = "Скрыть данные";
+            this.HideDataTab.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 107);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Имя выходного файла:";
+            // 
+            // outputName
+            // 
+            this.outputName.Location = new System.Drawing.Point(26, 123);
+            this.outputName.Name = "outputName";
+            this.outputName.Size = new System.Drawing.Size(303, 20);
+            this.outputName.TabIndex = 9;
             // 
             // pBHide
             // 
@@ -217,22 +233,6 @@
             this.containerExtract.Size = new System.Drawing.Size(303, 20);
             this.containerExtract.TabIndex = 0;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 107);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Имя выходного файла:";
-            // 
-            // outputName
-            // 
-            this.outputName.Location = new System.Drawing.Point(26, 123);
-            this.outputName.Name = "outputName";
-            this.outputName.Size = new System.Drawing.Size(303, 20);
-            this.outputName.TabIndex = 9;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,8 +244,8 @@
             this.Name = "Form1";
             this.Text = "Стеганография";
             this.ControlPanel.ResumeLayout(false);
-            this.HideData.ResumeLayout(false);
-            this.HideData.PerformLayout();
+            this.HideDataTab.ResumeLayout(false);
+            this.HideDataTab.PerformLayout();
             this.ExtractData.ResumeLayout(false);
             this.ExtractData.PerformLayout();
             this.ResumeLayout(false);
@@ -255,7 +255,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl ControlPanel;
-        private System.Windows.Forms.TabPage HideData;
+        private System.Windows.Forms.TabPage HideDataTab;
         private System.Windows.Forms.TabPage ExtractData;
         private System.Windows.Forms.Button chooseHideFile;
         private System.Windows.Forms.TextBox hideFilePath;

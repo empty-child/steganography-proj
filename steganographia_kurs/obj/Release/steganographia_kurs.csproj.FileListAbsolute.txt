@@ -9,3 +9,4 @@ C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Rel
 C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\bin\Release\steganographia_kurs.exe.config
 C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.exe
 C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.pdb
+C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Release\steganographia_kurs.csprojResolveAssemblyReference.cache
