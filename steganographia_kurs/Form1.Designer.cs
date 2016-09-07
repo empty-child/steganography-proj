@@ -40,7 +40,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.hideFilePath = new System.Windows.Forms.TextBox();
             this.chooseHideFile = new System.Windows.Forms.Button();
-            this.ExtractData = new System.Windows.Forms.TabPage();
+            this.ExtractDataTab = new System.Windows.Forms.TabPage();
             this.pBExtract = new System.Windows.Forms.ProgressBar();
             this.extractButton = new System.Windows.Forms.Button();
             this.containerExChoose = new System.Windows.Forms.Button();
@@ -48,13 +48,13 @@
             this.containerExtract = new System.Windows.Forms.TextBox();
             this.ControlPanel.SuspendLayout();
             this.HideDataTab.SuspendLayout();
-            this.ExtractData.SuspendLayout();
+            this.ExtractDataTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // ControlPanel
             // 
             this.ControlPanel.Controls.Add(this.HideDataTab);
-            this.ControlPanel.Controls.Add(this.ExtractData);
+            this.ControlPanel.Controls.Add(this.ExtractDataTab);
             this.ControlPanel.Location = new System.Drawing.Point(12, 12);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.SelectedIndex = 0;
@@ -171,20 +171,20 @@
             this.chooseHideFile.UseVisualStyleBackColor = true;
             this.chooseHideFile.Click += new System.EventHandler(this.chooseHideFile_Click);
             // 
-            // ExtractData
+            // ExtractDataTab
             // 
-            this.ExtractData.Controls.Add(this.pBExtract);
-            this.ExtractData.Controls.Add(this.extractButton);
-            this.ExtractData.Controls.Add(this.containerExChoose);
-            this.ExtractData.Controls.Add(this.label3);
-            this.ExtractData.Controls.Add(this.containerExtract);
-            this.ExtractData.Location = new System.Drawing.Point(4, 22);
-            this.ExtractData.Name = "ExtractData";
-            this.ExtractData.Padding = new System.Windows.Forms.Padding(3);
-            this.ExtractData.Size = new System.Drawing.Size(431, 291);
-            this.ExtractData.TabIndex = 1;
-            this.ExtractData.Text = "Извлечь данные";
-            this.ExtractData.UseVisualStyleBackColor = true;
+            this.ExtractDataTab.Controls.Add(this.pBExtract);
+            this.ExtractDataTab.Controls.Add(this.extractButton);
+            this.ExtractDataTab.Controls.Add(this.containerExChoose);
+            this.ExtractDataTab.Controls.Add(this.label3);
+            this.ExtractDataTab.Controls.Add(this.containerExtract);
+            this.ExtractDataTab.Location = new System.Drawing.Point(4, 22);
+            this.ExtractDataTab.Name = "ExtractDataTab";
+            this.ExtractDataTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ExtractDataTab.Size = new System.Drawing.Size(431, 291);
+            this.ExtractDataTab.TabIndex = 1;
+            this.ExtractDataTab.Text = "Извлечь данные";
+            this.ExtractDataTab.UseVisualStyleBackColor = true;
             // 
             // pBExtract
             // 
@@ -246,8 +246,8 @@
             this.ControlPanel.ResumeLayout(false);
             this.HideDataTab.ResumeLayout(false);
             this.HideDataTab.PerformLayout();
-            this.ExtractData.ResumeLayout(false);
-            this.ExtractData.PerformLayout();
+            this.ExtractDataTab.ResumeLayout(false);
+            this.ExtractDataTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -256,7 +256,7 @@
 
         private System.Windows.Forms.TabControl ControlPanel;
         private System.Windows.Forms.TabPage HideDataTab;
-        private System.Windows.Forms.TabPage ExtractData;
+        private System.Windows.Forms.TabPage ExtractDataTab;
         private System.Windows.Forms.Button chooseHideFile;
         private System.Windows.Forms.TextBox hideFilePath;
         private System.Windows.Forms.Button hideButton;

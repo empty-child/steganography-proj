@@ -56,16 +56,19 @@ namespace steganographia_kurs
             FileData.containerPath = containerExtract.Text;
             //string image = FileProcessor.ImageOpen(containerExtract.Text);
             pBExtract.Value = 20;
-            string extractedData = DataConverter.ExtractData(FileData.containerPath);
-            pBExtract.Value = 100;
-            if (extractedData == null)
-            {
-                DialogResult error = MessageBox.Show("Данный файл не является контейнером", "Ошибка чтения данных", MessageBoxButtons.OK);
-            }
-            else
-            {
-                DialogResult result = MessageBox.Show(extractedData, "Результат", MessageBoxButtons.OK);
-            }
+            FileProcessor.Init(new FileProcessor());
+            ExtractData.Init(new ExtractData());
+
+            //string extractedData = DataConverter.ExtractData(FileData.containerPath);
+            //pBExtract.Value = 100;
+            //if (extractedData == null)
+            //{
+            //    DialogResult error = MessageBox.Show("Данный файл не является контейнером", "Ошибка чтения данных", MessageBoxButtons.OK);
+            //}
+            //else
+            //{
+            //    DialogResult result = MessageBox.Show(extractedData, "Результат", MessageBoxButtons.OK);
+            //}
             pBExtract.Visible = false;
             ResetForms();
         }
@@ -188,61 +191,6 @@ public class FileProcessor
 
     public class DataConverter
     {
-        //   public static void HideData(string container, string maindata, string outputName) //container - jpeg, main_data - текст
-        //    {
-        //        string s1 = null; byte r = 0, g = 0, b = 0;
-        //        string preamble = "<!preamble size="+maindata.Length.ToString().PadLeft(16, '0')+"!>";
-        //        preamble = Utils.ToBin(preamble);
-        //        maindata = preamble + maindata;
-        //        for (int i = 0, j = 0, cnt = 0, x = 0, y = 0, colour = 0; i < container.Length; i++)
-        //        {
-        //            s1 += container[i];
-        //            cnt++;
-        //            if (cnt % 6 == 0)
-        //            {
-        //                try
-        //                {
-        //                    s1 += maindata[j];
-        //                    s1 += maindata[j + 1];
-        //                    j += 2;
-        //                }
-        //                catch
-        //                {
-        //                    s1 += container[i + 1];
-        //                    s1 += container[i + 2];
-        //                }
-        //                i += 2;
-        //                cnt = 0;
-        //                switch (colour)
-        //                {
-        //                    case 0:
-        //                        r = Convert.ToByte(s1, 2);
-        //                        s1 = null;
-        //                        colour++;
-        //                        break;
-        //                    case 1:
-        //                        g = Convert.ToByte(s1, 2);
-        //                        s1 = null;
-        //                        colour++;
-        //                        break;
-        //                    case 2:
-        //                        b = Convert.ToByte(s1, 2);
-        //                        FileProcessor.targetBitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
-        //                        x++;
-        //                        if (x >= FileProcessor.targetBitmap.Width)
-        //                        {
-        //                            x = 0;
-        //                            y++;
-        //                        }
-        //                        colour = 0;
-        //                        s1 = null;
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //        FileProcessor.targetBitmap.Save(outputName + ".jpg");
-        //    }
-
         public static string ExtractData(string container = "2.jpg")
         {
             string output = null; int size = 0;
@@ -331,12 +279,54 @@ public class FileProcessor
         }
     }
 
+    public class ExtractData
+    {
+        Thread Thrd;
+        public static void Init(ExtractData ob)
+        {
+            ob.Thrd = new Thread(ob.Run);
+            ob.Thrd.Start();
+        }
+
+        void Run()
+        {//34
+            string output = null;
+            for (int y = 0, i = 0; y < FileData.container.Height; ++y)
+            {
+                for (int x = 0; x < FileData.container.Width; ++x)
+                {
+                    Color c = FileData.container.GetPixel(x, y);
+                    byte[] colorsArr = { c.R, c.G, c.B };
+                    for (int it = 0; it < 3; it++)
+                    {
+                        output += Extracting(colorsArr[it]);
+                        i++;
+                    }
+                    if (i == 33)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        string Extracting(byte color)
+        {
+            color %= 10;
+            while (color > 3)
+            {
+                color -= 4;
+            }
+            return Utils.ToBin(color).ToString();
+        }
+    }
+
 
     public static class Utils
     {
         public static string ToBin(int sym_code)
         {
-            return Convert.ToString(sym_code, 2).PadLeft(16, '0');
+            return Convert.ToString(sym_code, 2).PadLeft(2, '0');
         }
 
         public static string ToBin(string text)
