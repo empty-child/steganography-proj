@@ -21,16 +21,17 @@ namespace steganographia_kurs
         {
             FileData.containerPath = containerPath.Text;
             FileData.hideFilePath = hideFilePath.Text;
-            FileData.outputName = outputName.Text;
 
-            if (FileData.containerPath == "" || FileData.hideFilePath == "" || FileData.outputName == "")
+            if (FileData.containerPath == "" || FileData.hideFilePath == "")
             {
                 DialogResult error = MessageBox.Show("Не указан путь к файлам", "Укажите путь", MessageBoxButtons.OK);
                 return;
             }
-            
-            pBHide.Visible = true;
-            FileProcessor.Init(new FileProcessor());
+
+            FileData.outputName = "[h]" + FileData.containerPath.Remove(0, FileData.containerPath.LastIndexOf('\\') + 1);
+
+            //pBHide.Visible = true;
+            FileProcessor.Init(new FileProcessor(), true);
 
             if (!Utils.Limit(FileData.container, FileData.hidingText))
             {
@@ -38,38 +39,35 @@ namespace steganographia_kurs
                 return;
             }
 
-            pBHide.Value = 20;
+            //pBHide.Value = 20;
 
-            HideData.Init(new HideData()); //TODO: проверить работу алгоритма
+            HideData.Init(new HideData());
 
-            pBHide.Value = 100;
+            //pBHide.Value = 100;
 
-            DialogResult result = MessageBox.Show("Сокрытие прошло успешно", "Успех", MessageBoxButtons.OK);
-            pBHide.Visible = false;
+            //pBHide.Visible = false;
 
             ResetForms();
         }
 
-        private void extractButton_Click(object sender, EventArgs e) //TODO: адаптировать функцию под новые реалии
+        private void extractButton_Click(object sender, EventArgs e)
         {
-            pBExtract.Visible = true;
+            //pBExtract.Visible = true;
             FileData.containerPath = containerExtract.Text;
-            //string image = FileProcessor.ImageOpen(containerExtract.Text);
-            pBExtract.Value = 20;
+
+            if (FileData.containerPath == "")
+            {
+                DialogResult error = MessageBox.Show("Не указан путь к файлам", "Укажите путь", MessageBoxButtons.OK);
+                return;
+            }
+
+            FileData.outputName = FileData.containerPath.Remove(0, FileData.containerPath.LastIndexOf('\\') + 1) + ".txt";
+
+            //pBExtract.Value = 20;
+
             FileProcessor.Init(new FileProcessor());
             ExtractData.Init(new ExtractData());
 
-            //string extractedData = DataConverter.ExtractData(FileData.containerPath);
-            //pBExtract.Value = 100;
-            //if (extractedData == null)
-            //{
-            //    DialogResult error = MessageBox.Show("Данный файл не является контейнером", "Ошибка чтения данных", MessageBoxButtons.OK);
-            //}
-            //else
-            //{
-            //    DialogResult result = MessageBox.Show(extractedData, "Результат", MessageBoxButtons.OK);
-            //}
-            pBExtract.Visible = false;
             ResetForms();
         }
 
@@ -107,12 +105,10 @@ namespace steganographia_kurs
         {
             containerPath.Text = "";
             hideFilePath.Text = "";
-            outputName.Text = "";
             containerExtract.Text = "";
 
             FileData.containerPath = containerPath.Text;
             FileData.hideFilePath = hideFilePath.Text;
-            FileData.outputName = outputName.Text;
         }
 
         //public delegate void Procentage();
@@ -130,33 +126,36 @@ namespace steganographia_kurs
 
         //}
     }
-//TODO: разобраться с событиями и их работой (можно посмотреть в лабе с музыкой в вк)
-//public delegate void Procentage(); 
 
-//class EventTest : Form1
-//{
-//    public delegate void Procentage();
+    //public delegate void Procentage(); 
 
-//    public event Procentage ProcentEvent;
+    //class EventTest : Form1
+    //{
+    //    public delegate void Procentage();
 
-//    public void OnProcentage()
-//    {
-//        ProcentEvent?.Invoke();
-//    }
+    //    public event Procentage ProcentEvent;
 
-//    void ProcentIncrease(object sender, EventArgs e)
-//    {
-//        pBHide.Increment(5);
+    //    public void OnProcentage()
+    //    {
+    //        ProcentEvent?.Invoke();
+    //    }
 
-//    }
-//}
+    //    void ProcentIncrease(object sender, EventArgs e)
+    //    {
+    //        pBHide.Increment(5);
 
-public class FileProcessor
+    //    }
+    //}
+
+    public class FileProcessor
     {
-        public static void Init(FileProcessor ob)
+        public static void Init(FileProcessor ob, bool hide = false)
         {
             FileData.container = ob.ImageOpen(FileData.containerPath);
-            FileData.hidingText = ob.TextOpen(FileData.hideFilePath);
+            if (hide)
+            {
+                FileData.hidingText = ob.TextOpen(FileData.hideFilePath);
+            }
         }
 
         Bitmap ImageOpen(string filepath)
@@ -164,9 +163,11 @@ public class FileProcessor
             try
             {
                 Bitmap sourceBitmap = new Bitmap(filepath);
+                FileData.container2 = new Bitmap(sourceBitmap.Width, sourceBitmap.Height, sourceBitmap.PixelFormat); //HACK: найти альтернативу
+
                 return sourceBitmap;
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при открытии", MessageBoxButtons.OK);
                 return null;
@@ -189,51 +190,6 @@ public class FileProcessor
         }
     }
 
-    public class DataConverter
-    {
-        public static string ExtractData(string container = "2.jpg")
-        {
-            string output = null; int size = 0;
-            output = Extractor(container);
-            if (string.Compare(Utils.ToText(output), 0, "<!preamble size=", 0, 16) != 0)
-            {
-                return null;
-            }
-            else
-            {
-                size = int.Parse(Utils.ToText(output).Substring(16, 16)) * 4;
-            }
-            output = null;
-            output = Extractor(container, 2176, size);
-            output = Utils.ToText(output);
-            return output;
-        }
-
-        static string Extractor(string container, int position = 0, int size = 2176)
-        {
-            string output = null;
-            for (int i = position, cnt = 0; i < position + size; i++)
-            {
-                cnt++;
-                if (cnt % 8 == 0)
-                {
-                    try
-                    {
-                        output += container[i - 1]; //брал на символ больше, проверить
-                        output += container[i];
-                        cnt = 0;
-                    }
-                    catch
-                    {
-                        return output;
-                    }
-                }
-            }
-            return output;
-    }
-}
-
-
     public class HideData
     {
         Thread Thrd;
@@ -245,9 +201,9 @@ public class FileProcessor
 
         void Run()
         {
-            string preamble = "<!preamble size="+FileData.hidingText.Length.ToString().PadLeft(16, '0')+"!>";
-            FileData.hidingText = Utils.ToBin(preamble + FileData.hidingText);
-            byte i = 0;
+            string preamble = "<!preamble size=" + FileData.hidingText.Length.ToString().PadLeft(16, '0') + "!>";
+            FileData.hidingText = Utils.ToBin(preamble) + FileData.hidingText;
+            int i = 0;
             for (int y = 0; y < FileData.container.Height; ++y)
             {   // TODO: создать событие для изменения процентажа
                 for (int x = 0; x < FileData.container.Width; ++x)
@@ -255,25 +211,33 @@ public class FileProcessor
                     Color c = FileData.container.GetPixel(x, y);
                     byte[] colorsArr = { c.R, c.G, c.B };
                     byte[] outputColors = new byte[3];
-                    for(int it = 0; it < 3; it++)
+                    for (int it = 0; it < 3; it++)
                     {
                         outputColors[it] = (byte)(colorsArr[it] + DeltaCalculation(colorsArr[it], i));
                         i += 2;
                     }
-                    FileData.container.SetPixel(x, y, Color.FromArgb(outputColors[0], outputColors[1], outputColors[2]));
+                    try
+                    {
+                        FileData.container2.SetPixel(x, y, Color.FromArgb(outputColors[0], outputColors[1], outputColors[2]));
+                    }
+                    catch (Exception exp)
+                    {
+                        DialogResult error = MessageBox.Show("Произошла ошибка " + exp, "Ошибка при записи", MessageBoxButtons.OK);
+                    }
                 }
             }
-            FileData.container.Save(FileData.outputName + ".jpg");
+            FileData.container2.Save(FileData.outputName);
+            DialogResult result = MessageBox.Show("Сокрытие прошло успешно", "Успех", MessageBoxButtons.OK);
         }
 
-        int DeltaCalculation(byte dig, byte i)
+        int DeltaCalculation(byte dig, int i)
         {
-            dig %= 10;
             while (dig > 3)
             {
                 dig -= 4;
             }
-            byte hidingNum = Utils.ToDec(String.Concat(FileData.hidingText[i], FileData.hidingText[i + 1])); //вызывает сомнения
+            byte hidingNum = 0;
+            if (i + 1 < FileData.hidingText.Length) hidingNum = Utils.ToDec(String.Concat(FileData.hidingText[i], FileData.hidingText[i + 1]));
             int delta = hidingNum - dig;
             return delta;
         }
@@ -290,8 +254,8 @@ public class FileProcessor
 
         void Run()
         {//34
-            string output = null;
-            for (int y = 0, i = 0; y < FileData.container.Height; ++y)
+            string binaryOutput = null;
+            for (int y = 0, i = 0, size = 273; y < FileData.container.Height; ++y)
             {
                 for (int x = 0; x < FileData.container.Width; ++x)
                 {
@@ -299,12 +263,40 @@ public class FileProcessor
                     byte[] colorsArr = { c.R, c.G, c.B };
                     for (int it = 0; it < 3; it++)
                     {
-                        output += Extracting(colorsArr[it]);
+                        binaryOutput += Extracting(colorsArr[it]);
                         i++;
                     }
-                    if (i == 33)
+                    if (i == size)
                     {
+                        string output = Utils.ToText(binaryOutput);
+                        if (size == 273 && string.Compare(Utils.ToText(binaryOutput), 0, "<!preamble size=", 0, 16) == 0)
+                        {
+                            size = int.Parse(Utils.ToText(binaryOutput).Substring(16, 16)) + 34;
+                            //output = null;
+                        }
+                        else if (string.Compare(Utils.ToText(binaryOutput), 0, "<!preamble size=", 0, 16) != 0)
+                        {
+                            DialogResult result = MessageBox.Show("Данный файл не является контейнером", "Ошибка", MessageBoxButtons.OK);
+                            return;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                FileStream fs = new FileStream(FileData.outputName, FileMode.OpenOrCreate);
+                                StreamWriter str_wr = new StreamWriter(fs);
+                                str_wr.Write(output.Remove(0, 34));
+                                str_wr.Close();
+                                fs.Close();
+                                DialogResult result = MessageBox.Show("Восстановление данных выполнено", "Успех", MessageBoxButtons.OK);
+                                return;
+                            }
+                            catch
+                            {
+                                DialogResult result = MessageBox.Show("Ошибка записи в файл", "Ошибка", MessageBoxButtons.OK);
+                            }
 
+                        }
                     }
                 }
             }
@@ -312,7 +304,6 @@ public class FileProcessor
 
         string Extracting(byte color)
         {
-            color %= 10;
             while (color > 3)
             {
                 color -= 4;
@@ -338,7 +329,7 @@ public class FileProcessor
             }
             return temp;
         }
-        
+
         public static byte ToDec(string binText)
         {
             return Convert.ToByte(binText, 2);
@@ -364,7 +355,7 @@ public class FileProcessor
 
         public static bool Limit(Bitmap image, string text)
         {
-            return text.Length <= image.Height*image.Width*3 ? true : false;
+            return text.Length <= image.Height * image.Width * 3 ? true : false;
         }
     }
 
@@ -376,6 +367,7 @@ public class FileProcessor
 
         public static string hidingText { get; set; }
         public static Bitmap container { get; set; }
+
+        public static Bitmap container2 { get; set; }
     }
 }
-

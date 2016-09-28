@@ -20,3 +20,12 @@ C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Deb
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.Form1.resources
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.Properties.Resources.resources
 C:\Users\Ololoshenka\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.csproj.GenerateResource.Cache
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\bin\Debug\steganographia_kurs.exe.config
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.exe
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.pdb
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\bin\Debug\steganographia_kurs.exe
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\bin\Debug\steganographia_kurs.pdb
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.csprojResolveAssemblyReference.cache
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.Form1.resources
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.Properties.Resources.resources
+C:\Users\empty_child\Source\Repos\steganography-proj\steganographia_kurs\obj\Debug\steganographia_kurs.csproj.GenerateResource.Cache

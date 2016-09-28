@@ -30,8 +30,6 @@
         {
             this.ControlPanel = new System.Windows.Forms.TabControl();
             this.HideDataTab = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.outputName = new System.Windows.Forms.TextBox();
             this.pBHide = new System.Windows.Forms.ProgressBar();
             this.hideButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -63,8 +61,6 @@
             // 
             // HideDataTab
             // 
-            this.HideDataTab.Controls.Add(this.label4);
-            this.HideDataTab.Controls.Add(this.outputName);
             this.HideDataTab.Controls.Add(this.pBHide);
             this.HideDataTab.Controls.Add(this.hideButton);
             this.HideDataTab.Controls.Add(this.label2);
@@ -80,22 +76,6 @@
             this.HideDataTab.TabIndex = 0;
             this.HideDataTab.Text = "Скрыть данные";
             this.HideDataTab.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 107);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Имя выходного файла:";
-            // 
-            // outputName
-            // 
-            this.outputName.Location = new System.Drawing.Point(26, 123);
-            this.outputName.Name = "outputName";
-            this.outputName.Size = new System.Drawing.Size(303, 20);
-            this.outputName.TabIndex = 9;
             // 
             // pBHide
             // 
@@ -270,8 +250,6 @@
         private System.Windows.Forms.Button extractButton;
         private System.Windows.Forms.ProgressBar pBHide;
         private System.Windows.Forms.ProgressBar pBExtract;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox outputName;
     }
 }
 
